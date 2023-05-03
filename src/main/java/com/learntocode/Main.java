@@ -83,7 +83,7 @@ public class Main {
 
             //date|time|description|vendor|amount
             FileWriter writer = new FileWriter(FILE_NAME ,true);
-            writer.write(date+"|"+time+"|"+description+"|"+vendor+"|$"+amount+ "\n");
+            writer.write(date+"|"+time+"|"+description+"|"+vendor+"|"+amount+ "\n");
 
 
             writer.close();
@@ -118,7 +118,7 @@ public class Main {
 
                 //date|time|description|vendor|amount
                 FileWriter writer = new FileWriter(FILE_NAME ,true);
-                writer.write(date+"|"+time+"|"+description+"|"+vendor+"|$-"+amount+ "\n");
+                writer.write(date+"|"+time+"|"+description+"|"+vendor+"|"+amount+ "\n");
 
 
                 writer.close();
@@ -141,7 +141,7 @@ public class Main {
         System.out.println("R) Reports");
         System.out.println("H) Home");
         System.out.println("Enter your option: ");
-        choice = scanner.nextLine().trim();
+        choice = scanner.nextLine();
 
 
         switch (choice.toUpperCase()) {
@@ -150,10 +150,16 @@ public class Main {
                 break;
 
             case "D":
+                displayDeposits();
+                break;
 
             case "P":
+                displayPayments();
+                break;
 
             case "R":
+                reportsMenu(scanner);
+                break;
 
             case "H":
                 System.out.println("Welcome back");
@@ -173,23 +179,43 @@ public class Main {
         while((input = bufReader.readLine()) != null) {
             System.out.println(input);
 
-            //bufReader.close();
+
         }
+        bufReader.close();
     }
     private static void displayDeposits() {
-        
+
+                for (Transaction deposit : transactions) {
+
+                    if(deposit.getAmount() > 0) {
+                        System.out.println( deposit.getDate()+" " + deposit.getTime()+" "+ deposit.getDescription()+" "+deposit.getVendor()+" "+deposit.getAmount());
+                }}
+
+            }
 
 
         // This method should display a table of all deposits in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, and amount.
         // The total amount of all deposits should be displayed at the bottom of the table.
-    }
+
 
     private static void displayPayments() {
+        for (Transaction deposit : transactions) {
+
+                    if(deposit.getAmount() < 0) {
+                        System.out.printf("%s|%s|%s|%s|$%.2f%n",
+                                deposit.getDate(), deposit.getTime(), deposit.getDescription(),deposit.getVendor(),deposit.getAmount());
+                    }}
+
+            }
+
+
+
+
         // This method should display a table of all payments in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, and amount.
         // The total amount of all payments should be displayed at the bottom of the table.
-    }
+
 
     private static void reportsMenu(Scanner scanner) {
         boolean running = true;
@@ -288,11 +314,12 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("|");
+                String[] parts = line.split("\\|");
                 if (parts.length != 5) {
                     System.err.println("Invalid transaction format: " + line);
                     continue;
                 }
+
                 LocalDate date = LocalDate.parse(parts[0], DATE_FORMATTER);
                 LocalTime time = LocalTime.parse(parts[1], TIME_FORMATTER);
                 String description = parts[2];
