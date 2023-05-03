@@ -2,11 +2,14 @@ package com.learntocode;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
-    //private static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
@@ -15,8 +18,9 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        loadTransactions(FILE_NAME);
         Scanner scanner = new Scanner(System.in);
-        String choice = "Z";
+        String choice = "";
 
         while (!choice.equalsIgnoreCase("x")) {
             System.out.println("HOME SCREEN  \n--------------");
@@ -30,15 +34,15 @@ public class Main {
 
             switch (choice.toUpperCase()) {
                 case "D":
-                    AddDeposit();
+                    addDeposit(scanner);
                     break;
 
                 case "P":
-                    MakePayment(true);
+                    MakePayment(scanner);
                     break;
 
                 case "L":
-                    Ledger();
+                    displayLedger();
                     break;
 
                 case "X":
@@ -58,87 +62,79 @@ public class Main {
 
 
     //Add Deposit - prompt user for the deposit information and save it to the csv file
-    private static void AddDeposit() throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your deposit information");
-        System.out.println("Enter date: ");
-        String date = scanner.nextLine();
+    private static void addDeposit(Scanner scanner){
+        try {
 
-        System.out.println("Enter time: ");
-        String time = scanner.nextLine();
+            System.out.println("Enter your deposit information");
+            System.out.println("Enter date: ");
+            String date = scanner.nextLine();
 
-        System.out.println("Enter description: ");
-        String description = scanner.nextLine();
+            System.out.println("Enter time: ");
+            String time = scanner.nextLine();
 
-        System.out.println("Enter vendor: ");
-        String vendor = scanner.nextLine();
+            System.out.println("Enter description: ");
+            String description = scanner.nextLine();
 
-        System.out.println("Enter amount: ");
-        double amount = scanner.nextDouble();
+            System.out.println("Enter vendor: ");
+            String vendor = scanner.nextLine();
 
+            System.out.println("Enter amount: ");
+            double amount = scanner.nextDouble();
 
-
-
-
-        //date|time|description|vendor|amount
-        FileWriter writer = new FileWriter("transactions.csv");
-        writer.write(date+"|"+time+"|"+description+"|"+vendor+"|$"+amount);
+            //date|time|description|vendor|amount
+            FileWriter writer = new FileWriter(FILE_NAME ,true);
+            writer.write(date+"|"+time+"|"+description+"|"+vendor+"|$"+amount+ "\n");
 
 
-        writer.close();
+            writer.close();
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
 
     // P) Make Payment (Debit) - prompt user for the debit information and save it to the csv file
 
-    private static void MakePayment(boolean append) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your debit information");
-        System.out.println("Enter date: ");
-        String date = scanner.nextLine();
+    private static void MakePayment(Scanner scanner) {
 
-        System.out.println("Enter time: ");
-        String time = scanner.nextLine();
+            try {
+                System.out.println("Enter your debit information");
+                System.out.println("Enter date: ");
+                String date = scanner.nextLine();
 
-        System.out.println("Enter description: ");
-        String description = scanner.nextLine();
+                System.out.println("Enter time: ");
+                String time = scanner.nextLine();
 
-        System.out.println("Enter vendor: ");
-        String vendor = scanner.nextLine();
+                System.out.println("Enter description: ");
+                String description = scanner.nextLine();
 
-        System.out.println("Enter amount: ");
-        double amount = scanner.nextDouble();
+                System.out.println("Enter vendor: ");
+                String vendor = scanner.nextLine();
 
+                System.out.println("Enter amount: ");
+                double amount = scanner.nextDouble();
 
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter("transactions.csv");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            writer.write(date+"|"+time+"|"+description+"|"+vendor+"|"+"$-"+amount);
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+                //date|time|description|vendor|amount
+                FileWriter writer = new FileWriter(FILE_NAME ,true);
+                writer.write(date+"|"+time+"|"+description+"|"+vendor+"|$-"+amount+ "\n");
 
 
-        try {
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                writer.close();
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-    }
-
-
-    private static void Ledger() throws IOException {
+    private static void displayLedger() throws IOException {
         // display the ledger screen
         Scanner scanner = new Scanner(System.in);
-        String choice = "z";
+        String choice = " ";
 
         while(!choice.equalsIgnoreCase("H")) {
+            System.out.println("WELCOME TO THE LEDGER SCREEN  \n----------------");
         System.out.println("A) All");
         System.out.println("D) Deposits");
         System.out.println("P) Payments");
@@ -170,7 +166,7 @@ public class Main {
     }
     private static void display() throws IOException {
 
-        FileReader fileReader = new FileReader("transactions.csv");
+        FileReader fileReader = new FileReader(FILE_NAME);
         BufferedReader bufReader = new BufferedReader(fileReader);
         String input;
 
@@ -181,6 +177,9 @@ public class Main {
         }
     }
     private static void displayDeposits() {
+        
+
+
         // This method should display a table of all deposits in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, and amount.
         // The total amount of all deposits should be displayed at the bottom of the table.
@@ -253,37 +252,8 @@ public class Main {
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* private static void getTransaction() {
+    /*private static void getTransaction() {
         File transactionsFile = new File("transactions.csv");
         try {
             Scanner scanner = new Scanner(transactionsFile);
@@ -304,3 +274,46 @@ public class Main {
     }
 
 */
+    public static void loadTransactions(String FILE_NAME) {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.err.println("Failed to create transactions file");
+                return;
+            }
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("|");
+                if (parts.length != 5) {
+                    System.err.println("Invalid transaction format: " + line);
+                    continue;
+                }
+                LocalDate date = LocalDate.parse(parts[0], DATE_FORMATTER);
+                LocalTime time = LocalTime.parse(parts[1], TIME_FORMATTER);
+                String description = parts[2];
+                String vendor = parts[3].toUpperCase();
+                double amount = Double.parseDouble(parts[4]);
+
+                transactions.add(new Transaction(date, time, description, vendor, amount));
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to read transactions file");
+        }
+    }
+        // This method should load transactions from a file with the given file name.
+        // If the file does not exist, it should be created.
+        // The transactions should be stored in the `transactions` ArrayList.
+        // Each line of the file represents a single transaction in the following format:
+        // <date>,<time>,<vendor>,<type>,<amount>
+        // For example: 2023-04-29,13:45:00,Amazon,PAYMENT,29.99
+        // After reading all the transactions, the file should be closed.
+        // If any errors occur, an appropriate error message should be displayed.
+
+
+
+}
