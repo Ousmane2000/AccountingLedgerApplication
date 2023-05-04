@@ -57,7 +57,6 @@ public class Main {
 
         }
 
-
     }
 
 
@@ -92,8 +91,6 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-
-
 
     // P) Make Payment (Debit) - prompt user for the debit information and save it to the csv file
 
@@ -166,7 +163,6 @@ public class Main {
 
         }
 
-
     }
 
     }
@@ -178,7 +174,6 @@ public class Main {
 
         while((input = bufReader.readLine()) != null) {
             System.out.println(input);
-
 
         }
         bufReader.close();
@@ -192,26 +187,19 @@ public class Main {
                 }}
 
             }
-
-
         // This method should display a table of all deposits in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, and amount.
         // The total amount of all deposits should be displayed at the bottom of the table.
 
-
     private static void displayPayments() {
-        for (Transaction deposit : transactions) {
+        for (Transaction debit : transactions) {
 
-                    if(deposit.getAmount() < 0) {
+                    if(debit.getAmount() < 0) {
                         System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                                deposit.getDate(), deposit.getTime(), deposit.getDescription(),deposit.getVendor(),deposit.getAmount());
+                                debit.getDate(), debit.getTime(), debit.getDescription(),debit.getVendor(),debit.getAmount());
                     }}
 
             }
-
-
-
-
         // This method should display a table of all payments in the `transactions` ArrayList.
         // The table should have columns for date, time, vendor, and amount.
         // The total amount of all payments should be displayed at the bottom of the table.
@@ -250,6 +238,8 @@ public class Main {
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the year.
                 case "5":
+                    filterTransactionsByVendor();
+                    break;
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
                     // with that vendor, including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the vendor.
@@ -271,35 +261,29 @@ public class Main {
         // If no transactions fall within the date range, the method prints a message indicating that there are no results.
     }
 
-    private static void filterTransactionsByVendor(String vendor) {
+    private static void filterTransactionsByVendor() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the vendor name: ");
+        String choice = scanner.nextLine();
+
+        for (Transaction transaction : transactions) {
+
+            if(transaction.getVendor().equalsIgnoreCase(choice)) {
+                System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+
+            }}
+
+    }
+
+
+
         // This method filters the transactions by vendor and prints a report to the console.
         // It takes one parameter: vendor, which represents the name of the vendor to filter by.
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }
 
-    /*private static void getTransaction() {
-        File transactionsFile = new File("transactions.csv");
-        try {
-            Scanner scanner = new Scanner(transactionsFile);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split("\\|");
-                String date = parts[0];
-                String time = parts[1];
-                String description = parts[2];
-                String vendor = parts[3];
-                double amount = Double.parseDouble(parts[4]);
-                //inventory.add(new Product(id, name, price));
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Transactions file not found.");
-        }
-    }
 
-*/
     public static void loadTransactions(String FILE_NAME) {
         File file = new File(FILE_NAME);
         if (!file.exists()) {
@@ -340,7 +324,5 @@ public class Main {
         // For example: 2023-04-29,13:45:00,Amazon,PAYMENT,29.99
         // After reading all the transactions, the file should be closed.
         // If any errors occur, an appropriate error message should be displayed.
-
-
 
 }
