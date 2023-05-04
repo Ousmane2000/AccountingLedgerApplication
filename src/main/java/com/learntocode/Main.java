@@ -249,11 +249,33 @@ public class Main {
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the month.
                 case "3":
+
+                    for (Transaction transaction : transactions) {
+                        LocalDate date = LocalDate.now();
+
+                        if(transaction.getDate().getYear() == date.getYear()) {
+                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+
+
+                        }}
+                    break;
                     // Generate a report for all transactions within the current year,
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the year.
 
                 case "4":
+                    for (Transaction transaction : transactions) {
+                        LocalDate date = LocalDate.now();
+                        LocalDate previousYearDate = date.minusYears(1);
+
+                        if(transaction.getDate().getYear() == previousYearDate.getYear()) {
+                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+
+
+                        }}
+                    break;
+
+
                     // Generate a report for all transactions within the previous year,
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the year.
@@ -297,8 +319,6 @@ public class Main {
             }
 
     }
-
-
 
         // This method filters the transactions by vendor and prints a report to the console.
         // It takes one parameter: vendor, which represents the name of the vendor to filter by.
