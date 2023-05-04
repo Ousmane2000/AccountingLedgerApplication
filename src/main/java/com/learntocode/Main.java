@@ -2,6 +2,7 @@ package com.learntocode;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -221,10 +222,29 @@ public class Main {
 
             switch (input) {
                 case "1":
+                    for (Transaction transaction : transactions) {
+                        LocalDate date = LocalDate.now();
+
+                        if(transaction.getDate().getMonth() == date.getMonth()) {
+                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+
+
+                        }}
+                    break;
                     // Generate a report for all transactions within the current month,
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the month.
                 case "2":
+                    for (Transaction transaction : transactions) {
+                        LocalDate date = LocalDate.now();
+                        LocalDate previousMonthDate = date.minusMonths(1);
+
+                        if(transaction.getDate().getMonth() == previousMonthDate.getMonth()) {
+                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+
+
+                        }}
+                    break;
                     // Generate a report for all transactions within the previous month,
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the month.
@@ -254,6 +274,7 @@ public class Main {
 
 
     private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
+
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
         // The method loops through the transactions list and checks each transaction's date against the date range.
@@ -271,7 +292,9 @@ public class Main {
             if(transaction.getVendor().equalsIgnoreCase(choice)) {
                 System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
-            }}
+                }
+
+            }
 
     }
 
