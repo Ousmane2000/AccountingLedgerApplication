@@ -24,7 +24,7 @@ public class Main {
         String choice = "";
 
         while (!choice.equalsIgnoreCase("x")) {
-            System.out.println("HOME SCREEN  \n--------------");
+            System.out.println("HOME SCREEN  \n-----------------------");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
@@ -80,10 +80,13 @@ public class Main {
 
             System.out.println("Enter amount: ");
             double amount = scanner.nextDouble();
+            scanner.nextLine();
 
             //date|time|description|vendor|amount
             FileWriter writer = new FileWriter(FILE_NAME ,true);
             writer.write(date+"|"+time+"|"+description+"|"+vendor+"|"+amount+ "\n");
+            System.out.println("Your deposit has been added! ");
+            System.out.println();
 
 
             writer.close();
@@ -113,10 +116,13 @@ public class Main {
 
                 System.out.println("Enter amount: ");
                 double amount = scanner.nextDouble();
+                System.out.println();
 
                 //date|time|description|vendor|amount
                 FileWriter writer = new FileWriter(FILE_NAME ,true);
                 writer.write(date+"|"+time+"|"+description+"|"+vendor+"|"+amount+ "\n");
+                System.out.println("Your payment has been added! \n");
+
 
 
                 writer.close();
@@ -132,7 +138,7 @@ public class Main {
         String choice = " ";
 
         while(!choice.equalsIgnoreCase("H")) {
-            System.out.println("WELCOME TO THE LEDGER SCREEN  \n----------------");
+            System.out.println("WELCOME TO THE LEDGER SCREEN  \n-------------------");
         System.out.println("A) All");
         System.out.println("D) Deposits");
         System.out.println("P) Payments");
@@ -209,7 +215,7 @@ public class Main {
     private static void reportsMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("Reports");
+            System.out.println("Reports \n-------------------");
             System.out.println("Choose an option:");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
@@ -225,8 +231,8 @@ public class Main {
                     for (Transaction transaction : transactions) {
                         LocalDate date = LocalDate.now();
 
-                        if(transaction.getDate().getMonth() == date.getMonth()) {
-                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+                        if(transaction.getDate().getMonth() == date.getMonth() && transaction.getDate().getYear() == date.getYear() ) {
+                            System.out.println(transaction.getDate()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
 
                         }}
@@ -239,8 +245,8 @@ public class Main {
                         LocalDate date = LocalDate.now();
                         LocalDate previousMonthDate = date.minusMonths(1);
 
-                        if(transaction.getDate().getMonth() == previousMonthDate.getMonth()) {
-                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+                        if(transaction.getDate().getMonth() == previousMonthDate.getMonth() && transaction.getDate().getYear() == date.getYear()) {
+                            System.out.println(transaction.getDate()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
 
                         }}
@@ -254,7 +260,7 @@ public class Main {
                         LocalDate date = LocalDate.now();
 
                         if(transaction.getDate().getYear() == date.getYear()) {
-                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+                            System.out.println(transaction.getDate()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
 
                         }}
@@ -269,13 +275,11 @@ public class Main {
                         LocalDate previousYearDate = date.minusYears(1);
 
                         if(transaction.getDate().getYear() == previousYearDate.getYear()) {
-                            System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
+                            System.out.println(transaction.getDate()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
 
                         }}
                     break;
-
-
                     // Generate a report for all transactions within the previous year,
                     // including the date, vendor, and amount for each transaction.
                     // The report should include a total of all transaction amounts for the year.
@@ -315,6 +319,9 @@ public class Main {
                 System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
                 }
+            else {
+                System.out.println("Sorry, there are no results for the Vendor! ");
+            }
 
             }
 
@@ -343,7 +350,7 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
                 if (parts.length != 5) {
-                    System.err.println("Invalid transaction format: " + line);
+                    System.err.println("Invalid Transaction Format: " + line);
                     continue;
                 }
 
