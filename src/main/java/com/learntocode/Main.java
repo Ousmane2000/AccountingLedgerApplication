@@ -23,6 +23,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String choice = "";
 
+
+        // Home screen menu
+
         while (!choice.equalsIgnoreCase("x")) {
             System.out.println("HOME SCREEN  \n-----------------------");
             System.out.println("D) Add Deposit");
@@ -66,10 +69,10 @@ public class Main {
         try {
 
             System.out.println("Enter your deposit information");
-            System.out.println("Enter date: ");
+            System.out.println("Enter date (yyyy-MM-dd): ");
             String date = scanner.nextLine();
 
-            System.out.println("Enter time: ");
+            System.out.println("Enter time (HH:mm:ss): ");
             String time = scanner.nextLine();
 
             System.out.println("Enter description: ");
@@ -102,10 +105,10 @@ public class Main {
 
             try {
                 System.out.println("Enter your debit information");
-                System.out.println("Enter date: ");
+                System.out.println("Enter date (yyyy-MM-dd): ");
                 String date = scanner.nextLine();
 
-                System.out.println("Enter time: ");
+                System.out.println("Enter time (HH:mm:ss): ");
                 String time = scanner.nextLine();
 
                 System.out.println("Enter description: ");
@@ -138,7 +141,7 @@ public class Main {
         String choice = " ";
 
         while(!choice.equalsIgnoreCase("H")) {
-            System.out.println("WELCOME TO THE LEDGER SCREEN  \n-------------------");
+        System.out.println("WELCOME TO THE LEDGER SCREEN  \n-------------------");
         System.out.println("A) All");
         System.out.println("D) Deposits");
         System.out.println("P) Payments");
@@ -194,22 +197,20 @@ public class Main {
                 }}
 
             }
-        // This method should display a table of all deposits in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
-        // The total amount of all deposits should be displayed at the bottom of the table.
+        // This method should display  all deposits in the `transactions` ArrayList.
+
 
     private static void displayPayments() {
         for (Transaction debit : transactions) {
 
                     if(debit.getAmount() < 0) {
                         System.out.printf("%s|%s|%s|%s|$%.2f%n",
-                                debit.getDate(), debit.getTime(), debit.getDescription(),debit.getVendor(),debit.getAmount());
+                                debit.getDate(), debit.getTime(), debit.getDescription(),debit.getVendor(),debit.getAmount()+"-");
                     }}
 
             }
         // This method should display a table of all payments in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
-        // The total amount of all payments should be displayed at the bottom of the table.
+
 
 
     private static void reportsMenu(Scanner scanner) {
@@ -238,8 +239,8 @@ public class Main {
                         }}
                     break;
                     // Generate a report for all transactions within the current month,
-                    // including the date, vendor, and amount for each transaction.
-                    // The report should include a total of all transaction amounts for the month.
+
+
                 case "2":
                     for (Transaction transaction : transactions) {
                         LocalDate date = LocalDate.now();
@@ -252,8 +253,8 @@ public class Main {
                         }}
                     break;
                     // Generate a report for all transactions within the previous month,
-                    // including the date, vendor, and amount for each transaction.
-                    // The report should include a total of all transaction amounts for the month.
+
+
                 case "3":
 
                     for (Transaction transaction : transactions) {
@@ -266,8 +267,7 @@ public class Main {
                         }}
                     break;
                     // Generate a report for all transactions within the current year,
-                    // including the date, vendor, and amount for each transaction.
-                    // The report should include a total of all transaction amounts for the year.
+
 
                 case "4":
                     for (Transaction transaction : transactions) {
@@ -276,19 +276,15 @@ public class Main {
 
                         if(transaction.getDate().getYear() == previousYearDate.getYear()) {
                             System.out.println(transaction.getDate()+" "+transaction.getVendor()+" "+transaction.getAmount());
-
-
                         }}
                     break;
                     // Generate a report for all transactions within the previous year,
-                    // including the date, vendor, and amount for each transaction.
-                    // The report should include a total of all transaction amounts for the year.
+
                 case "5":
                     filterTransactionsByVendor();
                     break;
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
-                    // with that vendor, including the date, vendor, and amount for each transaction.
-                    // The report should include a total of all transaction amounts for the vendor.
+
                 case "0":
                     running = false;
                 default:
@@ -299,15 +295,8 @@ public class Main {
     }
 
 
-    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
 
-        // This method filters the transactions by date and prints a report to the console.
-        // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
-        // The method loops through the transactions list and checks each transaction's date against the date range.
-        // Transactions that fall within the date range are printed to the console.
-        // If no transactions fall within the date range, the method prints a message indicating that there are no results.
-    }
-
+    // This method filters the transactions by vendor and prints a report to the console.
     private static void filterTransactionsByVendor() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the vendor name: ");
@@ -319,19 +308,12 @@ public class Main {
                 System.out.println(transaction.getDate()+" "+transaction.getTime()+" "+transaction.getDescription()+" "+transaction.getVendor()+" "+transaction.getAmount());
 
                 }
-            else {
-                System.out.println("Sorry, there are no results for the Vendor! ");
-            }
 
             }
 
     }
 
-        // This method filters the transactions by vendor and prints a report to the console.
-        // It takes one parameter: vendor, which represents the name of the vendor to filter by.
-        // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
-        // Transactions with a matching vendor name are printed to the console.
-        // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
+
 
 
     public static void loadTransactions(String FILE_NAME) {
@@ -366,13 +348,8 @@ public class Main {
             System.err.println("Failed to read transactions file");
         }
     }
-        // This method should load transactions from a file with the given file name.
-        // If the file does not exist, it should be created.
-        // The transactions should be stored in the `transactions` ArrayList.
-        // Each line of the file represents a single transaction in the following format:
-        // <date>,<time>,<vendor>,<type>,<amount>
-        // For example: 2023-04-29,13:45:00,Amazon,PAYMENT,29.99
-        // After reading all the transactions, the file should be closed.
+        // This method load the transactions from a file with the transaction.csv.
+        // If the file does not exist, it will be created.
         // If any errors occur, an appropriate error message should be displayed.
 
 }
